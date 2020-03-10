@@ -1,6 +1,6 @@
 <div class=" w3l-login-form" style="max-width: 400px; margin-top: 10%;">
 <h2 class="fit-content center">Login Here</h2>
-<form action="#" method="POST">
+<form method="POST">
     <div class=" w3l-form-group">
         <div class="group">
             <i class="material-icons icon">account_circle</i>

@@ -40,10 +40,10 @@ function togNav() {
             </a><br>
             <img class="w3-circle center-block" src="static/images/user.png" height="150" width="150" style="background:white;">
             <c:choose>
-                <c:when test="">
-                    <a href="/about" >${username}</a>
-                    <a href="/about" >About</a>
-                    <a href="#" >Contact</a>
+                <c:when test="${loggedin}">
+                    <a href="/about">${username}</a>
+                    <a href="/about">About</a>
+                    <a href="#">Contact</a>
                 </c:when>
                 <c:otherwise>
                     <a href="/login" >Login</a>
@@ -79,7 +79,7 @@ function togNav() {
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <c:choose>
-                            <c:when test="">
+                            <c:when test="${loggedin}">
                                 <li class="">
                                     <a href="#">
                                         <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; ${username}
@@ -118,7 +118,7 @@ function togNav() {
                 </c:when>
                 <c:otherwise>
                     <c:choose>
-                        <c:when test="">
+                        <c:when test="${loggedin}">
                             <h1>Hello, ${username}!</h1>
                         </c:when>
                         <c:otherwise>
