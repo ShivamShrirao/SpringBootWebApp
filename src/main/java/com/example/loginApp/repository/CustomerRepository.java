@@ -1,11 +1,11 @@
 package com.example.loginApp.repository;
 
-import com.example.loginApp.model.Customer;
+import com.example.loginApp.model.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface CustomerRepository extends MongoRepository<Customer,String> {
-    public Customer findByFirstName(String firstName);
-    public List<Customer> findByLastName(String lastName);
+public interface CustomerRepository extends MongoRepository<User,String> {
+    public List<User> findByLastName(@Param("name") String name);
 }
