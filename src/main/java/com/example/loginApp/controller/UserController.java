@@ -31,12 +31,11 @@ public class UserController {
     }
     @PostMapping("/login")
     public ModelAndView loginUser(User user, HttpSession session){
-        ModelAndView mv = new ModelAndView("redirect:/index");
+        ModelAndView mv = new ModelAndView("redirect:/");
         User dbusr=repo.findByUsernameAndPassword(user.getUsername(),user.getPassword());
         if(dbusr!=null){
             session.setAttribute("loggedin",true);
             session.setAttribute("username",dbusr.getUsername());
-            mv.setViewName("redirect:/");
         }
         else{
             mv.setViewName("redirect:/login");
