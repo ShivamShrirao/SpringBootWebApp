@@ -21,18 +21,25 @@ public class UserController {
         return "index";
     }
     @GetMapping("/login")
-    public ModelAndView loginView(){
-        ModelAndView mv = new ModelAndView("index");
-        mv.addObject("mode","MODE_LOGIN");
+    public ModelAndView loginView(HttpSession session){
+        ModelAndView mv = new ModelAndView("redirect:/");
+        if(session.getAttribute("loggedin")==null){
+            mv.addObject("mode","MODE_LOGIN");
+            mv.setViewName("index");
+        }
         return mv;
     }
     @PostMapping("/login")
     public ModelAndView loginUser(User user, HttpSession session){
-        ModelAndView mv = new ModelAndView("index");
+        ModelAndView mv = new ModelAndView("redirect:/index");
         User dbusr=repo.findByUsernameAndPassword(user.getUsername(),user.getPassword());
         if(dbusr!=null){
             session.setAttribute("loggedin",true);
             session.setAttribute("username",dbusr.getUsername());
+            mv.setViewName("redirect:/");
+        }
+        else{
+            mv.setViewName("redirect:/login");
         }
         return mv;
     }
@@ -41,12 +48,15 @@ public class UserController {
         if(session!=null){
             session.invalidate();
         }
-        return "redirect:/";
+        return "redirect:/login";
     }
     @GetMapping("/register")
-    public ModelAndView registerView(){
-        ModelAndView mv = new ModelAndView("index");
-        mv.addObject("mode","MODE_REGISTER");
+    public ModelAndView registerView(HttpSession session){
+        ModelAndView mv = new ModelAndView("redirect:/");
+        if(session.getAttribute("loggedin")==null) {
+            mv.addObject("mode", "MODE_REGISTER");
+            mv.setViewName("index");
+        }
         return mv;
     }
     @PostMapping("/register")
