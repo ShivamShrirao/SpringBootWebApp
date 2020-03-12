@@ -1,8 +1,9 @@
 package com.example.loginApp.controller;
 
 import com.example.loginApp.model.User;
-import com.example.loginApp.repository.CustomerRepository;
+import com.example.loginApp.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class UserController {
     @Autowired
-    CustomerRepository repo;
+    private UserRepository repo;
 
     @GetMapping({"/","/index"})
     public String index(){
@@ -39,14 +42,14 @@ public class UserController {
         }
         else{
             mv.setViewName("redirect:/login");
+            List<String> messages = new ArrayList<String>();
+            messages.add("Invalid username/password!");
+            mv.addObject("messages",messages);
         }
         return mv;
     }
     @RequestMapping("/logout")
-    public String logoutUser(HttpSession session){
-        if(session!=null){
-            session.invalidate();
-        }
+    public String logoutUser(){
         return "redirect:/login";
     }
     @GetMapping("/register")
@@ -60,6 +63,7 @@ public class UserController {
     }
     @PostMapping("/register")
     public String registerUser(User user){
+        user.setPassword((new BCryptPasswordEncoder()).encode(user.getPassword()));
         repo.save(user);
         return "redirect:/login";
     }

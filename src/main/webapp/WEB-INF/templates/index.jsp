@@ -103,11 +103,10 @@ function togNav() {
                 </div>
             </div>
         </nav>
-<!--         {% if messages %}
-            {% for message in messages %}
-                <script>M.toast({html: '{{message}}', classes: 'w3-theme-red rounded', displayLength: 10000});</script>
-            {% endfor %}
-        {% endif %} -->
+        <c:forEach var="message" items="$messages">
+            <script>M.toast({html: ${message}, classes: 'w3-theme-red rounded', displayLength: 10000});</script>
+        </c:forEach>
+        <script>M.toast({html: ${SPRING_SECURITY_LAST_EXCEPTION.message}, classes: 'w3-theme-red rounded', displayLength: 10000});</script>
         <div class="w3-row-padding w3-stretch w3-padding w3-margin">
             <c:choose>
                 <c:when test="${mode == 'MODE_LOGIN'}">

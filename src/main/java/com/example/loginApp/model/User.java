@@ -12,11 +12,6 @@ public class User {
     private String password;
     private String password2;
 
-//    public User(String username, String password) {
-//        this.username = username;
-//        this.password = password;
-//    }
-
     public User(String firstName, String lastName, String email, String username, String password, String password2) {
         this.firstName = firstName;
         this.lastName = lastName;
