@@ -2,7 +2,9 @@ package com.example.loginApp.model;
 
 import org.springframework.data.annotation.Id;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
     @Id
     private String id;
     private String firstName;
@@ -71,11 +73,11 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", username='" + username + '\'' +
+        return "User{\n" +
+                "firstName='" + firstName + "'\n" +
+                ", lastName='" + lastName + "'\n" +
+                ", email='" + email + "'\n" +
+                ", username='" + username + "'\n" +
                 '}';
     }
 }

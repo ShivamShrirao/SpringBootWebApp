@@ -2,7 +2,9 @@ package com.example.loginApp.controller;
 
 import com.example.loginApp.model.User;
 import com.example.loginApp.repository.UserRepository;
+import com.example.loginApp.webSecurity.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,51 +13,43 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.List;
+import java.security.Principal;
+import java.util.Enumeration;
 
 @Controller
 public class UserController {
     @Autowired
     private UserRepository repo;
 
-    @GetMapping({"/","/index"})
-    public String index(){
-        return "index";
+    @GetMapping({"/","/index","/homepage"})
+    public ModelAndView index(HttpSession session){
+        Enumeration<String> attributes = session.getAttributeNames();
+        while (attributes.hasMoreElements()) {
+            String attribute = (String) attributes.nextElement();
+            System.out.println(attribute+" : "+session.getAttribute(attribute));
+        }
+        return new ModelAndView("index");
     }
     @GetMapping("/login")
-    public ModelAndView loginView(HttpSession session){
+    public ModelAndView loginView(Principal principal){
         ModelAndView mv = new ModelAndView("redirect:/");
-        if(session.getAttribute("loggedin")==null){
+        if(principal==null){
             mv.addObject("mode","MODE_LOGIN");
             mv.setViewName("index");
         }
         return mv;
     }
-    @PostMapping("/login")
-    public ModelAndView loginUser(User user, HttpSession session){
-        ModelAndView mv = new ModelAndView("redirect:/");
-        User dbusr=repo.findByUsernameAndPassword(user.getUsername(),user.getPassword());
-        if(dbusr!=null){
-            session.setAttribute("loggedin",true);
-            session.setAttribute("username",dbusr.getUsername());
-        }
-        else{
-            mv.setViewName("redirect:/login");
-            List<String> messages = new ArrayList<String>();
-            messages.add("Invalid username/password!");
-            mv.addObject("messages",messages);
-        }
+    @RequestMapping("/about")
+    public ModelAndView aboutUser(Principal principal){
+        ModelAndView mv = new ModelAndView("index");
+        mv.addObject("mode","MODE_ABOUT");
+        mv.addObject("user",repo.findByUsername(principal.getName()));
         return mv;
     }
-    @RequestMapping("/logout")
-    public String logoutUser(){
-        return "redirect:/login";
-    }
     @GetMapping("/register")
-    public ModelAndView registerView(HttpSession session){
+    public ModelAndView registerView(Principal principal){
         ModelAndView mv = new ModelAndView("redirect:/");
-        if(session.getAttribute("loggedin")==null) {
+        if(principal==null) {
             mv.addObject("mode", "MODE_REGISTER");
             mv.setViewName("index");
         }

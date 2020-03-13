@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "https://www.w3.org/TR/html4/loose.dtd">
 <html lang="en">
 <head>
@@ -10,8 +12,7 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <!--Import Google Text Font-->
-<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
-      rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 <!-- Compiled and minified JavaScript from Materialize -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <!-- W3.css -->
@@ -26,6 +27,7 @@ function togNav() {
     $('#closetxt').toggleClass('open');
 }
 </script>
+<sec:authorize var="loggedin" access="isAuthenticated()" />
 </head>
     <body class="w3-theme">
         <!-- Sidebar -->
@@ -41,6 +43,7 @@ function togNav() {
             <img class="w3-circle center-block" src="static/images/user.png" height="150" width="150" style="background:white;">
             <c:choose>
                 <c:when test="${loggedin}">
+                <sec:authentication property="principal.username" var="username" />
                     <a href="/about">${username}</a>
                     <a href="/about">About</a>
                     <a href="#">Contact</a>
@@ -103,10 +106,9 @@ function togNav() {
                 </div>
             </div>
         </nav>
-        <c:forEach var="message" items="$messages">
+        <c:forEach var="message" items="${messages}">
             <script>M.toast({html: ${message}, classes: 'w3-theme-red rounded', displayLength: 10000});</script>
         </c:forEach>
-        <script>M.toast({html: ${SPRING_SECURITY_LAST_EXCEPTION.message}, classes: 'w3-theme-red rounded', displayLength: 10000});</script>
         <div class="w3-row-padding w3-stretch w3-padding w3-margin">
             <c:choose>
                 <c:when test="${mode == 'MODE_LOGIN'}">
@@ -114,6 +116,9 @@ function togNav() {
                 </c:when>
                 <c:when test="${mode == 'MODE_REGISTER'}">
                     <%@ include file="register.jsp"%>
+                </c:when>
+                 <c:when test="${mode == 'MODE_ABOUT'}">
+                    <%@ include file="about.jsp"%>
                 </c:when>
                 <c:otherwise>
                     <c:choose>
