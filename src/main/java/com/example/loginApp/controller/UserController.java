@@ -2,9 +2,7 @@ package com.example.loginApp.controller;
 
 import com.example.loginApp.model.User;
 import com.example.loginApp.repository.UserRepository;
-import com.example.loginApp.webSecurity.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
